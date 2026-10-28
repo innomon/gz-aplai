@@ -34,9 +34,9 @@
 
 ## Phase 4: OpenAI-Compatible HTTP Server & Concurrency Control
 
-- [ ] Task: OpenAI-compatible completions HTTP server
-    - [ ] Implement HTTP server listening on configured host/port
-    - [ ] Handle `/v1/chat/completions` supporting JSON response format and Server-Sent Events (SSE)
-- [ ] Task: Hardware execution concurrency control
-    - [ ] Implement execution mutex / serialization around inference calls to prevent NPU/GPU contention
+- [x] Task: OpenAI-compatible completions HTTP server [2afa3ca]
+    - [x] Implement HTTP server listening on configured host/port
+    - [x] Handle `/v1/chat/completions` supporting JSON response format and Server-Sent Events (SSE)
+- [x] Task: Hardware execution concurrency control [2afa3ca]
+    - [x] Implement execution mutex / serialization around inference calls to prevent NPU/GPU contention
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: OpenAI-Compatible HTTP Server & Concurrency Control'
