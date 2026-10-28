@@ -24,10 +24,10 @@
 
 ## Phase 3: OpenAI Vision API & Automated Test Suite
 
-- [ ] Task: OpenAI `image_url` payload support in `src/server.goose`
-    - [ ] Parse array-style `content: [{"type": "text", ...}, {"type": "image_url", ...}]` in HTTP request
-    - [ ] Route multimodal prompts through `engine_generate_multimodal` for synchronous and SSE responses
-- [ ] Task: Multimodal automated test suite in `test/test_vision.goose` and `test/test_all.goose`
-    - [ ] Generate minimal synthetic test image
-    - [ ] Verify OCR extraction and visual question answering
+- [x] Task: OpenAI `image_url` payload support in `src/server.goose` [aaf77a2]
+    - [x] Parse array-style `content: [{"type": "text", ...}, {"type": "image_url", ...}]` in HTTP request
+    - [x] Route multimodal prompts through `engine_generate_multimodal` for synchronous and SSE responses
+- [x] Task: Multimodal automated test suite in `test/test_vision.goose` and `test/test_all.goose` [aaf77a2]
+    - [x] Generate minimal synthetic test image
+    - [x] Verify OCR extraction and visual question answering
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: OpenAI Vision API & Automated Test Suite' (Protocol in workflow.md)
