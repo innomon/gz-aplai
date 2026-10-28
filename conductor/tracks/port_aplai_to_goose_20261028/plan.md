@@ -6,9 +6,9 @@
     - [x] Create `apple_ai_bridge.swift` with C exports (`AppleAIGenerate`, `FreeAppleAIString`, `AppleAIIsAvailable`)
     - [x] Create `apple_ai_bridge.h` declaring C ABI signatures for Goose FFI
     - [x] Create `Makefile` driving `swiftc` to build `libapple_ai_bridge.dylib`
-- [ ] Task: Goose FFI smoke test
-    - [ ] Create minimal Goose smoke test (`smoke_ffi.goose`) invoking bridge C functions
-    - [ ] Compile smoke test using `/Volumes/mac1tb/B204-zone/owly-sewa/goose-lang/build/goose` and verify execution
+- [x] Task: Goose FFI smoke test [d9d4d8c]
+    - [x] Create minimal Goose smoke test (`smoke_ffi.goose`) invoking bridge C functions
+    - [x] Compile smoke test using `/Volumes/mac1tb/B204-zone/owly-sewa/goose-lang/build/goose` and verify execution
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Build Harness, Swift Bridge & Goose FFI'
 
 ## Phase 2: Core Engine, Configuration & Structured Logging
