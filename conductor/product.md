@@ -13,6 +13,7 @@ It provides:
 2. A colorized interactive REPL chat interface with real-time streaming token generation.
 3. An OpenAI-compatible HTTP server (`/v1/chat/completions`) supporting both synchronous JSON responses and real-time Server-Sent Events (SSE) streaming.
 4. An automated build harness driven by the Goose compiler toolchain (`/Volumes/mac1tb/B204-zone/owly-sewa/goose-lang/build/goose`).
+5. Native multimodal visual intelligence via macOS Vision framework (OCR and scene classification) for CLI (`--image`) and OpenAI Vision API.
 
 ## 2. Target Audience
 - **Systems & Terminal Power Users:** Developers needing a lightning-fast, zero-overhead, scriptable local LLM runner for Apple Silicon.
@@ -24,3 +25,4 @@ It provides:
 - **OpenAI-Compatible HTTP Server:** Local REST API server on default port 8080 with streaming SSE support and concurrency serialization.
 - **Configuration & Structured Logging:** Dual console/file logging, structured output, and `config.yaml` support.
 - **Pure Goose Architecture:** Maximum utilization of Goose data stacks, inline structures, and native performance.
+- **Multimodal Vision & OCR Engine:** Native Apple Vision framework integration (`VNRecognizeTextRequest`, `VNClassifyImageRequest`) supporting local image files and OpenAI base64 data URLs.
