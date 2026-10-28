@@ -9,11 +9,11 @@ fn is_exit_command(input: const u8[:]) -> bool {
 }
 
 fn run_repl(eng: Engine&, log: Logger&) {
-    write_stdout("\033[1;35m--- APLAI Local Interactive REPL (Apple Silicon) ---\033[0m\n");
+    write_stdout("\x1b[1;35m--- APLAI Local Interactive REPL (Apple Silicon) ---\x1b[0m\n");
     write_stdout("Type your prompt and press Enter. Commands: /exit, /quit\n\n");
 
     loop {
-        write_stdout("\033[1;36muser>\033[0m ");
+        write_stdout("\x1b[1;36muser>\x1b[0m ");
         flush_stdout();
 
         var line: u8[>..] = [];
@@ -35,7 +35,7 @@ fn run_repl(eng: Engine&, log: Logger&) {
         }
 
         log_debug(log, str("REPL prompt: ", trimmed));
-        write_stdout("\033[1;32massistant>\033[0m ");
+        write_stdout("\x1b[1;32massistant>\x1b[0m ");
         flush_stdout();
 
         var response: u8[>..] = [];
