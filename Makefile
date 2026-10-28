@@ -1,4 +1,4 @@
-GOOSE ?= /Volumes/mac1tb/B204-zone/owly-sewa/goose-lang/build/goose
+GOOSE ?= goose
 SWIFTC ?= swiftc
 CC ?= cc
 SDK_PATH ?= $(shell xcrun --show-sdk-path)
