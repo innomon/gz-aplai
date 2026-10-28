@@ -42,6 +42,10 @@ static inline uint8_t apple_ai_is_available(void) {
     return _swift_apple_ai_is_available() != 0 ? 1 : 0;
 }
 
+static inline uint8_t is_stdin_pipe(void) {
+    return !isatty(STDIN_FILENO) ? 1 : 0;
+}
+
 // 2. Session lifecycle
 static inline int64_t apple_ai_init_session(sl_u8 instructions) {
     char *inst_cstr = NULL;
