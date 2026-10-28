@@ -2,10 +2,10 @@
 
 ## Phase 1: Build Harness, Swift Bridge & Goose FFI Smoke Test
 
-- [ ] Task: Create Swift Dynamic Bridge and C Header
-    - [ ] Create `apple_ai_bridge.swift` with C exports (`AppleAIGenerate`, `FreeAppleAIString`, `AppleAIIsAvailable`)
-    - [ ] Create `apple_ai_bridge.h` declaring C ABI signatures for Goose FFI
-    - [ ] Create `Makefile` driving `swiftc` to build `libapple_ai_bridge.dylib`
+- [x] Task: Create Swift Dynamic Bridge and C Header [39e6b79]
+    - [x] Create `apple_ai_bridge.swift` with C exports (`AppleAIGenerate`, `FreeAppleAIString`, `AppleAIIsAvailable`)
+    - [x] Create `apple_ai_bridge.h` declaring C ABI signatures for Goose FFI
+    - [x] Create `Makefile` driving `swiftc` to build `libapple_ai_bridge.dylib`
 - [ ] Task: Goose FFI smoke test
     - [ ] Create minimal Goose smoke test (`smoke_ffi.goose`) invoking bridge C functions
     - [ ] Compile smoke test using `/Volumes/mac1tb/B204-zone/owly-sewa/goose-lang/build/goose` and verify execution
