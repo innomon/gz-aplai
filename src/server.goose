@@ -11,11 +11,30 @@ extern fn net_write(client_fd: i32, data: const u8[:]) -> i64;
 extern fn net_close(client_fd: i32);
 
 fn extract_json_string(body: const u8[:], key: const u8[:], out: u8[>..]&) -> bool {
-    let key_idx = find(body, key);
+    var search_key: u8[>..] = [];
+    search_key.append(key);
+    search_key.append(":");
+    var key_idx = find(body, search_key);
+    var key_len = search_key.len;
+
     if key_idx < 0 {
-        return false;
+        // Try with space after colon: "key":
+        var search_key_space: u8[>..] = [];
+        search_key_space.append(key);
+        search_key_space.append(" :");
+        key_idx = find(body, search_key_space);
+        key_len = search_key_space.len;
+        if key_idx < 0 {
+            // Fallback to bare key
+            key_idx = find(body, key);
+            key_len = key.len;
+            if key_idx < 0 {
+                return false;
+            }
+        }
     }
-    let after_key = body[key_idx + key.len..];
+
+    let after_key = body[key_idx + key_len..];
     let quote_start = find(after_key, "\"");
     if quote_start < 0 {
         return false;
@@ -38,6 +57,15 @@ fn extract_json_string(body: const u8[:], key: const u8[:], out: u8[>..]&) -> bo
         i++;
     }
     return false;
+}
+
+fn extract_image_url(body: const u8[:], out: u8[>..]&) -> bool {
+    let img_marker = find(body, "\"image_url\"");
+    if img_marker < 0 {
+        return false;
+    }
+    let after_marker = body[img_marker..];
+    return extract_json_string(after_marker, "\"url\"", out);
 }
 
 fn handle_client_request(client_fd: i32, req: const u8[:], eng: Engine&, log: Logger&) {
@@ -63,12 +91,17 @@ fn handle_client_request(client_fd: i32, req: const u8[:], eng: Engine&, log: Lo
 
     let body = if body_idx >= 0 { req[body_idx + header_len..] } else { req[req.len..] };
 
-    // Extract prompt from "content"
+    // Extract prompt from "content" or "text" or "prompt"
     var prompt: u8[>..] = [];
-    if !extract_json_string(body, "\"content\"", prompt) {
-        // Fallback: check prompt key
-        extract_json_string(body, "\"prompt\"", prompt);
+    if !extract_json_string(body, "\"text\"", prompt) {
+        if !extract_json_string(body, "\"content\"", prompt) {
+            extract_json_string(body, "\"prompt\"", prompt);
+        }
     }
+
+    // Extract optional image_url for multimodal vision
+    var image_url: u8[>..] = [];
+    let has_image = extract_image_url(body, image_url);
 
     if prompt.len == 0 {
         let bad_req = "HTTP/1.1 400 Bad Request\r\nContent-Type: application/json\r\nContent-Length: 51\r\n\r\n{\"error\":{\"message\":\"Missing messages or prompt\"}}";
@@ -83,11 +116,20 @@ fn handle_client_request(client_fd: i32, req: const u8[:], eng: Engine&, log: Lo
         let sse_headers = "HTTP/1.1 200 OK\r\nContent-Type: text/event-stream\r\nCache-Control: no-cache\r\nConnection: keep-alive\r\n\r\n";
         net_write(client_fd, sse_headers);
         var sse_acc: u8[>..] = [];
-        engine_generate_sse(eng, client_fd, prompt, sse_acc);
+        if has_image && image_url.len > 0 {
+            engine_generate_multimodal_sse(eng, client_fd, image_url, prompt, sse_acc);
+        } else {
+            engine_generate_sse(eng, client_fd, prompt, sse_acc);
+        }
     } else {
         log_info(log, str("Generating synchronous completion for prompt: ", prompt));
         var gen_resp: u8[>..] = [];
-        let ok = engine_generate(eng, prompt, gen_resp);
+        var ok = false;
+        if has_image && image_url.len > 0 {
+            ok = engine_generate_multimodal(eng, image_url, prompt, gen_resp);
+        } else {
+            ok = engine_generate(eng, prompt, gen_resp);
+        }
 
         var json_body: u8[>..] = [];
         json_body.append("{\"id\":\"chatcmpl-aplai\",\"object\":\"chat.completion\",\"created\":");
