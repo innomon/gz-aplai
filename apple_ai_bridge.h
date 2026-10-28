@@ -12,10 +12,14 @@
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <pthread.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+// Global execution mutex to serialize Apple Silicon inference calls
+static pthread_mutex_t g_inference_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 // Declarations of Swift exported functions
 extern int32_t _swift_apple_ai_is_available(void);
@@ -68,7 +72,9 @@ static inline uint8_t apple_ai_generate(int64_t session_handle, sl_u8 prompt, gs
     char *prompt_cstr = sl_to_cstr(prompt);
     if (!prompt_cstr) return 0;
 
+    pthread_mutex_lock(&g_inference_mutex);
     char *result = _swift_apple_ai_respond((void*)session_handle, prompt_cstr);
+    pthread_mutex_unlock(&g_inference_mutex);
     free(prompt_cstr);
 
     if (!result) return 0;
@@ -105,7 +111,9 @@ static inline uint8_t apple_ai_generate_chat(int64_t session_handle, sl_u8 promp
     struct ChatStreamContext ctx;
     ctx.out = out;
 
+    pthread_mutex_lock(&g_inference_mutex);
     char *err = _swift_apple_ai_respond_stream((void*)session_handle, prompt_cstr, on_chat_token, &ctx);
+    pthread_mutex_unlock(&g_inference_mutex);
     free(prompt_cstr);
 
     if (err) {
@@ -171,7 +179,9 @@ static inline uint8_t apple_ai_generate_sse(int64_t session_handle, int32_t clie
     ctx.out = out;
     ctx.index = 0;
 
+    pthread_mutex_lock(&g_inference_mutex);
     char *err = _swift_apple_ai_respond_stream((void*)session_handle, prompt_cstr, on_sse_token, &ctx);
+    pthread_mutex_unlock(&g_inference_mutex);
     free(prompt_cstr);
 
     if (err) {

@@ -5,12 +5,13 @@ import logger from "../src";
 import engine from "../src";
 import cli from "../src";
 import repl from "../src";
+import server from "../src";
 
 fn main() {
     print("=== Running Complete gz-aplai Test Suite ===");
 
     // 1. Config tests
-    print("\n[1/4] Running Config Tests...");
+    print("\n[1/5] Running Config Tests...");
     let def = default_config();
     assert(def.server.port == 8080);
     let parsed = parse_config("server:\n  port: 9999\n");
@@ -18,7 +19,7 @@ fn main() {
     print("Config tests passed.");
 
     // 2. Logger tests
-    print("\n[2/4] Running Logger Tests...");
+    print("\n[2/5] Running Logger Tests...");
     var lcfg = default_config();
     lcfg.logger.console_enabled = false;
     lcfg.logger.file_enabled = true;
@@ -32,7 +33,7 @@ fn main() {
     print("Logger tests passed.");
 
     // 3. Engine tests
-    print("\n[3/4] Running Engine Tests...");
+    print("\n[3/5] Running Engine Tests...");
     let eng = init_engine("You are a helpful test assistant.");
     assert(eng.available == true);
     assert(eng.session_handle != 0);
@@ -44,7 +45,7 @@ fn main() {
     print("Engine tests passed.");
 
     // 4. CLI & REPL tests
-    print("\n[4/4] Running CLI & REPL Tests...");
+    print("\n[4/5] Running CLI & REPL Tests...");
     var mock_args: const u8[:][>..] = [];
     mock_args.push("gz-aplai");
     mock_args.push("--chat");
@@ -54,6 +55,14 @@ fn main() {
     assert(is_exit_command("quit") == true);
     assert(is_exit_command("hello") == false);
     print("CLI and REPL tests passed.");
+
+    // 5. Server tests
+    print("\n[5/5] Running Server Tests...");
+    let payload = "{\"messages\":[{\"role\":\"user\",\"content\":\"Explain gravity\"}],\"stream\":true}";
+    var extracted_prompt: u8[>..] = [];
+    assert(extract_json_string(payload, "\"content\"", extracted_prompt));
+    assert(extracted_prompt == "Explain gravity");
+    print("Server tests passed.");
 
     print("\n=== ALL TESTS PASSED SUCCESSFULLY ===");
 }

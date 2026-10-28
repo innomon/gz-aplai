@@ -7,7 +7,6 @@ extern fn apple_ai_close_session(session_handle: i64);
 extern fn apple_ai_generate(session_handle: i64, prompt: const u8[:], out: u8[>..]&) -> bool;
 extern fn apple_ai_generate_chat(session_handle: i64, prompt: const u8[:], out: u8[>..]&) -> bool;
 extern fn apple_ai_generate_sse(session_handle: i64, client_fd: i32, prompt: const u8[:], out: u8[>..]&) -> bool;
-extern fn net_write(fd: i32, data: const u8[:]) -> i64;
 
 struct Engine {
     session_handle: i64,
@@ -50,8 +49,7 @@ fn engine_generate_chat(e: Engine&, prompt: const u8[:], out: u8[>..]&) -> bool 
 
 fn engine_generate_sse(e: Engine&, client_fd: i32, prompt: const u8[:], out: u8[>..]&) -> bool {
     if !e.available || e.session_handle == 0 {
-        let err_json = "data: {\"error\":{\"message\":\"Apple AI is not available on this system.\"}}\n\n";
-        net_write(client_fd, err_json);
+        out.append("ERROR: Apple AI is not available on this system.");
         return false;
     }
     return apple_ai_generate_sse(e.session_handle, client_fd, prompt, out);

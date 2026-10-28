@@ -5,6 +5,7 @@ import logger from ".";
 import engine from ".";
 import cli from ".";
 import repl from ".";
+import server from ".";
 
 fn main() {
     let raw_args = args();
@@ -27,6 +28,13 @@ fn main() {
     if opts.chat {
         // Interactive REPL chat mode
         run_repl(eng, log);
+        close_engine(eng);
+        return;
+    }
+
+    if opts.server {
+        // OpenAI-compatible HTTP server mode
+        run_server(cfg, eng, log);
         close_engine(eng);
         return;
     }
