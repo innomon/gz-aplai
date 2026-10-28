@@ -14,12 +14,12 @@
 
 ## Phase 2: Goose Multimodal Engine Integration & CLI Support
 
-- [ ] Task: Goose multimodal inference integration in `src/engine.goose`
-    - [ ] Declare `extern fn apple_ai_process_image(image_source: const u8[:], out: u8[>..]&) -> bool`
-    - [ ] Implement `engine_generate_multimodal(eng, image_source, prompt, out)` combining visual context and user query
-- [ ] Task: CLI `--image` argument parsing and execution
-    - [ ] Add `--image <path>` / `-i <path>` flag to `src/cli.goose`
-    - [ ] Wire up multimodal generation in `src/main.goose` for single prompts and piped stdin
+- [x] Task: Goose multimodal inference integration in `src/engine.goose` [8bb6525]
+    - [x] Declare `extern fn apple_ai_process_image(image_source: const u8[:], out: u8[>..]&) -> bool`
+    - [x] Implement `engine_generate_multimodal(eng, image_source, prompt, out)` combining visual context and user query
+- [x] Task: CLI `--image` argument parsing and execution [8bb6525]
+    - [x] Add `--image <path>` / `-i <path>` flag to `src/cli.goose`
+    - [x] Wire up multimodal generation in `src/main.goose` for single prompts and piped stdin
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Goose Multimodal Engine Integration & CLI Support' (Protocol in workflow.md)
 
 ## Phase 3: OpenAI Vision API & Automated Test Suite
