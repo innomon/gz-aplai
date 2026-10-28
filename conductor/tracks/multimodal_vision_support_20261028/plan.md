@@ -1,6 +1,6 @@
 # Implementation Plan - Add Multimodal Capabilities (macOS Vision & Image Understanding) to APLAI in Goose
 
-## Phase 1: Swift Vision Dynamic Bridge & C ABI
+## Phase 1: Swift Vision Dynamic Bridge & C ABI [checkpoint: 727153f]
 
 - [x] Task: Implement Swift Vision image processor in `apple_ai_bridge.swift` [d58406e]
     - [x] Add image loader supporting file paths and base64 data URLs via `ImageIO` / `CoreGraphics`
@@ -10,7 +10,7 @@
 - [x] Task: C ABI Bridge & Compilation in `apple_ai_bridge.h` and `Makefile` [d58406e]
     - [x] Add C wrapper `apple_ai_process_image(image_source, out_desc)`
     - [x] Link `Vision` framework in `Makefile` and verify dylib compilation
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Swift Vision Dynamic Bridge & C ABI' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Swift Vision Dynamic Bridge & C ABI' (Protocol in workflow.md) [727153f]
 
 ## Phase 2: Goose Multimodal Engine Integration & CLI Support
 
