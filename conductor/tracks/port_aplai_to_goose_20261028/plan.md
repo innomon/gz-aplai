@@ -13,9 +13,9 @@
 
 ## Phase 2: Core Engine, Configuration & Structured Logging
 
-- [ ] Task: Configuration module (`config.goose` / `config.yaml`)
-    - [ ] Implement config parser checking explicit path, `./config.yaml`, and executable directory
-    - [ ] Define default fallback configuration
+- [x] Task: Configuration module (`config.goose` / `config.yaml`) [d039916]
+    - [x] Implement config parser checking explicit path, `./config.yaml`, and executable directory
+    - [x] Define default fallback configuration
 - [ ] Task: Structured logger (`logger.goose`)
     - [ ] Implement console message formatting and file logging
 - [ ] Task: Core Inference Engine wrapper (`engine.goose`)
