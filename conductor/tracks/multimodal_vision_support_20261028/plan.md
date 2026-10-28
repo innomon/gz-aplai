@@ -22,7 +22,7 @@
     - [x] Wire up multimodal generation in `src/main.goose` for single prompts and piped stdin
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Goose Multimodal Engine Integration & CLI Support' (Protocol in workflow.md) [4345c8c]
 
-## Phase 3: OpenAI Vision API & Automated Test Suite
+## Phase 3: OpenAI Vision API & Automated Test Suite [checkpoint: 9d84f37]
 
 - [x] Task: OpenAI `image_url` payload support in `src/server.goose` [aaf77a2]
     - [x] Parse array-style `content: [{"type": "text", ...}, {"type": "image_url", ...}]` in HTTP request
@@ -30,4 +30,4 @@
 - [x] Task: Multimodal automated test suite in `test/test_vision.goose` and `test/test_all.goose` [aaf77a2]
     - [x] Generate minimal synthetic test image
     - [x] Verify OCR extraction and visual question answering
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: OpenAI Vision API & Automated Test Suite' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: OpenAI Vision API & Automated Test Suite' (Protocol in workflow.md) [9d84f37]
