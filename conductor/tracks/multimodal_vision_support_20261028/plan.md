@@ -2,14 +2,14 @@
 
 ## Phase 1: Swift Vision Dynamic Bridge & C ABI
 
-- [ ] Task: Implement Swift Vision image processor in `apple_ai_bridge.swift`
-    - [ ] Add image loader supporting file paths and base64 data URLs via `ImageIO` / `CoreGraphics`
-    - [ ] Run `VNRecognizeTextRequest` (.accurate) for OCR text extraction
-    - [ ] Run `VNClassifyImageRequest` for scene and object classification
-    - [ ] Export `_swift_apple_ai_process_image` C symbol
-- [ ] Task: C ABI Bridge & Compilation in `apple_ai_bridge.h` and `Makefile`
-    - [ ] Add C wrapper `apple_ai_process_image(image_source, out_desc)`
-    - [ ] Link `Vision` framework in `Makefile` and verify dylib compilation
+- [x] Task: Implement Swift Vision image processor in `apple_ai_bridge.swift` [d58406e]
+    - [x] Add image loader supporting file paths and base64 data URLs via `ImageIO` / `CoreGraphics`
+    - [x] Run `VNRecognizeTextRequest` (.accurate) for OCR text extraction
+    - [x] Run `VNClassifyImageRequest` for scene and object classification
+    - [x] Export `_swift_apple_ai_process_image` C symbol
+- [x] Task: C ABI Bridge & Compilation in `apple_ai_bridge.h` and `Makefile` [d58406e]
+    - [x] Add C wrapper `apple_ai_process_image(image_source, out_desc)`
+    - [x] Link `Vision` framework in `Makefile` and verify dylib compilation
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Swift Vision Dynamic Bridge & C ABI' (Protocol in workflow.md)
 
 ## Phase 2: Goose Multimodal Engine Integration & CLI Support
