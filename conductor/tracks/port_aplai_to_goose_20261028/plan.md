@@ -24,9 +24,9 @@
 
 ## Phase 3: CLI Engine, UNIX Pipeline & Interactive REPL
 
-- [ ] Task: CLI argument parser and UNIX pipeline execution
-    - [ ] Implement argument parsing for flags (`--chat`, `--server`, `--config`, positional prompt)
-    - [ ] Implement stdin reader for streaming piping input into engine
+- [x] Task: CLI argument parser and UNIX pipeline execution [b504b4c]
+    - [x] Implement argument parsing for flags (`--chat`, `--server`, `--config`, positional prompt)
+    - [x] Implement stdin reader for streaming piping input into engine
 - [ ] Task: Interactive REPL chat mode (`--chat`)
     - [ ] Implement interactive chat loop with ANSI terminal styling
     - [ ] Implement exit commands (`/exit`, `/quit`, `exit`, `quit`)
