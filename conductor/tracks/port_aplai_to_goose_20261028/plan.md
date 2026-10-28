@@ -27,9 +27,9 @@
 - [x] Task: CLI argument parser and UNIX pipeline execution [b504b4c]
     - [x] Implement argument parsing for flags (`--chat`, `--server`, `--config`, positional prompt)
     - [x] Implement stdin reader for streaming piping input into engine
-- [ ] Task: Interactive REPL chat mode (`--chat`)
-    - [ ] Implement interactive chat loop with ANSI terminal styling
-    - [ ] Implement exit commands (`/exit`, `/quit`, `exit`, `quit`)
+- [x] Task: Interactive REPL chat mode (`--chat`) [041116e]
+    - [x] Implement interactive chat loop with ANSI terminal styling
+    - [x] Implement exit commands (`/exit`, `/quit`, `exit`, `quit`)
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: CLI Engine, UNIX Pipeline & Interactive REPL'
 
 ## Phase 4: OpenAI-Compatible HTTP Server & Concurrency Control
