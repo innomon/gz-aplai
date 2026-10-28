@@ -17,5 +17,12 @@ fn main() {
     assert(is_exit_command("/explain") == false);
     print("PASS: is_exit_command exit commands verified.");
 
+    assert(is_help_command("/") == true);
+    assert(is_help_command("/help") == true);
+    assert(is_help_command("help") == true);
+    assert(is_help_command("/?") == true);
+    assert(is_help_command("hello") == false);
+    print("PASS: is_help_command help commands verified.");
+
     print("ALL REPL TESTS PASSED.");
 }

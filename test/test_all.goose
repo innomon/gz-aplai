@@ -54,6 +54,8 @@ fn main() {
     assert(is_exit_command("/exit") == true);
     assert(is_exit_command("quit") == true);
     assert(is_exit_command("hello") == false);
+    assert(is_help_command("/") == true);
+    assert(is_help_command("/help") == true);
     print("CLI and REPL tests passed.");
 
     // 5. Server tests
