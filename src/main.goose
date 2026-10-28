@@ -44,7 +44,14 @@ fn main() {
         // Single prompt or piped stdin: UNIX pipeline mode (pure stdout)
         log_debug(log, str("Executing prompt: ", input_prompt));
         var response: u8[>..] = [];
-        let ok = engine_generate(eng, input_prompt, response);
+        var ok = false;
+        if opts.has_image && opts.image_path.len > 0 {
+            log_info(log, str("Ingesting multimodal image: ", opts.image_path));
+            ok = engine_generate_multimodal(eng, opts.image_path, input_prompt, response);
+        } else {
+            ok = engine_generate(eng, input_prompt, response);
+        }
+
         if ok {
             write_stdout(response);
             write_stdout("\n");

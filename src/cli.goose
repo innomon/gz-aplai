@@ -7,6 +7,8 @@ struct CliOptions {
     chat: bool,
     server: bool,
     config_path: u8[..256],
+    image_path: u8[..512],
+    has_image: bool,
     prompt: u8[..4096],
     has_prompt: bool,
     show_help: bool,
@@ -15,13 +17,14 @@ struct CliOptions {
 fn print_help() {
     write_stdout("APLAI Goose (gz-aplai) - Apple Silicon Local AI Runner\n\n");
     write_stdout("Usage:\n");
-    write_stdout("  gz-aplai [prompt]            Run single prompt in UNIX pipeline/CLI mode\n");
-    write_stdout("  gz-aplai --chat              Start interactive REPL chat session\n");
-    write_stdout("  gz-aplai --server            Start OpenAI-compatible HTTP server\n");
-    write_stdout("  gz-aplai --config <path>     Specify custom configuration file path\n");
-    write_stdout("  gz-aplai --help, -h          Show this help message\n\n");
+    write_stdout("  gz-aplai [prompt]                 Run single prompt in UNIX pipeline/CLI mode\n");
+    write_stdout("  gz-aplai --image <path> [prompt]  Run multimodal prompt with image understanding\n");
+    write_stdout("  gz-aplai --chat                   Start interactive REPL chat session\n");
+    write_stdout("  gz-aplai --server                 Start OpenAI-compatible HTTP server\n");
+    write_stdout("  gz-aplai --config <path>          Specify custom configuration file path\n");
+    write_stdout("  gz-aplai --help, -h               Show this help message\n\n");
     write_stdout("Piping:\n");
-    write_stdout("  echo \"Explain quantum computing\" | gz-aplai\n\n");
+    write_stdout("  echo \"Summarize this receipt\" | gz-aplai --image receipt.png\n\n");
 }
 
 fn parse_cli_args_internal(args_list: const u8[:][:]) -> CliOptions {
@@ -29,6 +32,8 @@ fn parse_cli_args_internal(args_list: const u8[:][:]) -> CliOptions {
         chat: false,
         server: false,
         config_path: "",
+        image_path: "",
+        has_image: false,
         prompt: "",
         has_prompt: false,
         show_help: false,
@@ -44,6 +49,15 @@ fn parse_cli_args_internal(args_list: const u8[:][:]) -> CliOptions {
             opts.server = true;
         } else if arg == "--help" || arg == "-h" || arg == "-help" {
             opts.show_help = true;
+        } else if arg == "--image" || arg == "-image" || arg == "-i" {
+            if i + 1 < args_list.len {
+                i++;
+                opts.image_path = args_list[i];
+                opts.has_image = true;
+            }
+        } else if starts_with(arg, "--image=") {
+            opts.image_path = arg[8..];
+            opts.has_image = true;
         } else if arg == "--config" || arg == "-config" {
             if i + 1 < args_list.len {
                 i++;

@@ -45,13 +45,25 @@ fn main() {
     print("PASS: Positional prompt joining verified.");
 
     // Test 4: Help flag
-    var args4 = args();
-    args4.resize(0);
+    var args4: const u8[:][>..] = [];
     args4.push("gz-aplai");
     args4.push("-h");
     let opts4 = parse_cli_args(args4);
     assert(opts4.show_help == true);
     print("PASS: Help flag verified.");
+
+    // Test 5: Image flag
+    var args5: const u8[:][>..] = [];
+    args5.push("gz-aplai");
+    args5.push("--image");
+    args5.push("sample.png");
+    args5.push("describe");
+    args5.push("this");
+    let opts5 = parse_cli_args(args5);
+    assert(opts5.has_image == true);
+    assert(opts5.image_path == "sample.png");
+    assert(opts5.prompt == "describe this");
+    print("PASS: --image flag verified.");
 
     print("ALL CLI TESTS PASSED.");
 }
