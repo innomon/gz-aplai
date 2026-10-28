@@ -29,6 +29,7 @@ extern char* _swift_apple_ai_respond(void *sessionPtr, const char *prompt);
 typedef void (*AppleAITokenCallback)(const char *token, int32_t len, void *userData);
 extern char* _swift_apple_ai_respond_stream(void *sessionPtr, const char *prompt, AppleAITokenCallback callback, void *userData);
 extern void _swift_apple_ai_free_string(char *str);
+extern char* _swift_apple_ai_process_image(const char *imageSource);
 
 // C helper for null-terminating a Goose sl_u8 slice into a temporary heap buffer
 static inline char* sl_to_cstr(sl_u8 s) {
@@ -65,6 +66,26 @@ static inline void apple_ai_close_session(int64_t handle) {
     if (handle != 0) {
         _swift_apple_ai_session_destroy((void*)handle);
     }
+}
+
+// 2b. Vision Image Processing (OCR & Scene understanding)
+static inline uint8_t apple_ai_process_image(sl_u8 image_source, gs_rref out_desc) {
+    char *src_cstr = sl_to_cstr(image_source);
+    if (!src_cstr) return 0;
+
+    char *result = _swift_apple_ai_process_image(src_cstr);
+    free(src_cstr);
+
+    if (!result) return 0;
+
+    uint8_t success = 1;
+    if (strncmp(result, "ERROR:", 6) == 0) {
+        success = 0;
+    }
+
+    gs_bld_append(out_desc, result, (int64_t)strlen(result));
+    _swift_apple_ai_free_string(result);
+    return success;
 }
 
 // 3. Batch prompt generation (UNIX pipeline & single prompt)

@@ -1,5 +1,8 @@
 import Foundation
 import FoundationModels
+import Vision
+import CoreGraphics
+import ImageIO
 
 public class AppleAISession {
     let session: LanguageModelSession
@@ -11,6 +14,87 @@ public class AppleAISession {
 }
 
 public typealias AppleAITokenCallback = @convention(c) (UnsafePointer<CChar>?, Int32, UnsafeMutableRawPointer?) -> Void
+
+private func loadImage(from source: String) -> CGImage? {
+    let cleanSource = source.trimmingCharacters(in: .whitespacesAndNewlines)
+    if cleanSource.hasPrefix("data:image/") {
+        guard let commaIdx = cleanSource.firstIndex(of: ",") else { return nil }
+        let base64Part = String(cleanSource[cleanSource.index(after: commaIdx)...])
+        guard let data = Data(base64Encoded: base64Part, options: .ignoreUnknownCharacters),
+              let imageSource = CGImageSourceCreateWithData(data as CFData, nil),
+              let cgImage = CGImageSourceCreateImageAtIndex(imageSource, 0, nil) else {
+            return nil
+        }
+        return cgImage
+    } else {
+        var filePath = cleanSource
+        if filePath.hasPrefix("file://") {
+            filePath = String(filePath.dropFirst(7))
+        }
+        let url = URL(fileURLWithPath: filePath)
+        guard let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil),
+              let cgImage = CGImageSourceCreateImageAtIndex(imageSource, 0, nil) else {
+            return nil
+        }
+        return cgImage
+    }
+}
+
+@_cdecl("_swift_apple_ai_process_image")
+public func _swift_apple_ai_process_image(imageSource: UnsafePointer<CChar>) -> UnsafeMutablePointer<CChar>? {
+    let sourceStr = String(cString: imageSource)
+    guard let cgImage = loadImage(from: sourceStr) else {
+        return strdup("ERROR: Failed to load image from source path or data URI")
+    }
+
+    let textRequest = VNRecognizeTextRequest()
+    textRequest.recognitionLevel = .accurate
+    textRequest.usesLanguageCorrection = true
+
+    let classifyRequest = VNClassifyImageRequest()
+
+    let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+    do {
+        try handler.perform([textRequest, classifyRequest])
+    } catch {
+        return strdup("ERROR: Vision request failed: \(error.localizedDescription)")
+    }
+
+    var recognizedLines: [String] = []
+    if let textResults = textRequest.results {
+        for observation in textResults {
+            if let topCandidate = observation.topCandidates(1).first {
+                recognizedLines.append(topCandidate.string)
+            }
+        }
+    }
+
+    var classifications: [String] = []
+    if let classResults = classifyRequest.results {
+        for observation in classResults.prefix(6) {
+            if observation.confidence > 0.15 {
+                let pct = Int(observation.confidence * 100)
+                classifications.append("\(observation.identifier) (\(pct)%)")
+            }
+        }
+    }
+
+    var desc = "[VISUAL CONTEXT]\n"
+    if !classifications.isEmpty {
+        desc += "Scene/Objects: " + classifications.joined(separator: ", ") + "\n"
+    }
+    if !recognizedLines.isEmpty {
+        desc += "Extracted Text (OCR):\n"
+        for line in recognizedLines {
+            desc += "- " + line + "\n"
+        }
+    } else {
+        desc += "Extracted Text (OCR): (No text detected)\n"
+    }
+    desc += "[/VISUAL CONTEXT]"
+
+    return strdup(desc)
+}
 
 @_cdecl("_swift_apple_ai_is_available")
 public func _swift_apple_ai_is_available() -> Int32 {
