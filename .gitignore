@@ -1,8 +1,27 @@
+# macOS system files
+.DS_Store
+._*
+
+# Dynamic libraries & compiled binaries
 *.dylib
-*.c
+*.o
+*.dSYM/
 gz-aplai
 test_runner
 test/smoke_ffi
-test/*.c
-*.o
-.DS_Store
+test/test_all
+test/test_*
+
+# Transpiled C output from Goose toolchain
+*.c
+!test_sample.png
+
+# Application logs & scratch data
+logs/
+*.log
+
+# Editor & workspace directories
+.idea/
+.vscode/
+*.swp
+*~
