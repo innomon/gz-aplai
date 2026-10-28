@@ -24,7 +24,7 @@ fn print_help() {
     write_stdout("  echo \"Explain quantum computing\" | gz-aplai\n\n");
 }
 
-fn parse_cli_args(args_list: const u8[:][>..]&) -> CliOptions {
+fn parse_cli_args_internal(args_list: const u8[:][:]) -> CliOptions {
     var opts = CliOptions {
         chat: false,
         server: false,
@@ -68,6 +68,16 @@ fn parse_cli_args(args_list: const u8[:][>..]&) -> CliOptions {
         opts.prompt = prompt_builder;
     }
     return opts;
+}
+
+fn parse_cli_args(args_list: u8[:][>..]&) -> CliOptions {
+    var view: const u8[:][>..] = [];
+    for a in args_list { view.push(a); }
+    return parse_cli_args_internal(view);
+}
+
+fn parse_cli_args(args_list: const u8[:][>..]&) -> CliOptions {
+    return parse_cli_args_internal(args_list);
 }
 
 fn get_input_prompt(opts: CliOptions&, out: u8[>..]&) -> bool {
