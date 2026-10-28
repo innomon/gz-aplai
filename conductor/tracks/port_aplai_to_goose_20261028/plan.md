@@ -18,8 +18,8 @@
     - [x] Define default fallback configuration
 - [x] Task: Structured logger (`logger.goose`) [44bf96e]
     - [x] Implement console message formatting and file logging
-- [ ] Task: Core Inference Engine wrapper (`engine.goose`)
-    - [ ] Implement Goose wrapper around `AppleAIGenerate` with proper memory management and error handling
+- [x] Task: Core Inference Engine wrapper (`engine.goose`) [dff9021]
+    - [x] Implement Goose wrapper around `AppleAIGenerate` with proper memory management and error handling
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Core Engine, Configuration & Structured Logging'
 
 ## Phase 3: CLI Engine, UNIX Pipeline & Interactive REPL
