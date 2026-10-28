@@ -12,7 +12,7 @@
     - [x] Link `Vision` framework in `Makefile` and verify dylib compilation
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Swift Vision Dynamic Bridge & C ABI' (Protocol in workflow.md) [727153f]
 
-## Phase 2: Goose Multimodal Engine Integration & CLI Support
+## Phase 2: Goose Multimodal Engine Integration & CLI Support [checkpoint: 4345c8c]
 
 - [x] Task: Goose multimodal inference integration in `src/engine.goose` [8bb6525]
     - [x] Declare `extern fn apple_ai_process_image(image_source: const u8[:], out: u8[>..]&) -> bool`
@@ -20,7 +20,7 @@
 - [x] Task: CLI `--image` argument parsing and execution [8bb6525]
     - [x] Add `--image <path>` / `-i <path>` flag to `src/cli.goose`
     - [x] Wire up multimodal generation in `src/main.goose` for single prompts and piped stdin
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Goose Multimodal Engine Integration & CLI Support' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Goose Multimodal Engine Integration & CLI Support' (Protocol in workflow.md) [4345c8c]
 
 ## Phase 3: OpenAI Vision API & Automated Test Suite
 
