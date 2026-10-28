@@ -7,7 +7,3 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [x] **Track: Port APLAI to Goose Language with Native Apple Silicon Bridge**
   *Link: [./tracks/port_aplai_to_goose_20261028/](./tracks/port_aplai_to_goose_20261028/)*
 
----
-
-- [x] **Track: Add Multimodal Capabilities (macOS Vision & Image Understanding) to APLAI in Goose**
-  *Link: [./tracks/multimodal_vision_support_20261028/](./tracks/multimodal_vision_support_20261028/)*
