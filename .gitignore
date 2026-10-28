@@ -1,0 +1,8 @@
+*.dylib
+*.c
+gz-aplai
+test_runner
+test/smoke_ffi
+test/*.c
+*.o
+.DS_Store

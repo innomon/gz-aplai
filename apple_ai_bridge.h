@@ -38,8 +38,8 @@ static inline char* sl_to_cstr(sl_u8 s) {
 }
 
 // 1. Availability check
-static inline bool apple_ai_is_available(void) {
-    return _swift_apple_ai_is_available() != 0;
+static inline uint8_t apple_ai_is_available(void) {
+    return _swift_apple_ai_is_available() != 0 ? 1 : 0;
 }
 
 // 2. Session lifecycle
@@ -60,18 +60,18 @@ static inline void apple_ai_close_session(int64_t handle) {
 }
 
 // 3. Batch prompt generation (UNIX pipeline & single prompt)
-static inline bool apple_ai_generate(int64_t session_handle, sl_u8 prompt, gs_rref out) {
+static inline uint8_t apple_ai_generate(int64_t session_handle, sl_u8 prompt, gs_rref out) {
     char *prompt_cstr = sl_to_cstr(prompt);
-    if (!prompt_cstr) return false;
+    if (!prompt_cstr) return 0;
 
     char *result = _swift_apple_ai_respond((void*)session_handle, prompt_cstr);
     free(prompt_cstr);
 
-    if (!result) return false;
+    if (!result) return 0;
 
-    bool success = true;
+    uint8_t success = 1;
     if (strncmp(result, "ERROR: ", 7) == 0) {
-        success = false;
+        success = 0;
     }
 
     gs_bld_append(out, result, (int64_t)strlen(result));
@@ -94,9 +94,9 @@ static void on_chat_token(const char *token, int32_t len, void *userData) {
     gs_bld_append(ctx->out, token, (int64_t)len);
 }
 
-static inline bool apple_ai_generate_chat(int64_t session_handle, sl_u8 prompt, gs_rref out) {
+static inline uint8_t apple_ai_generate_chat(int64_t session_handle, sl_u8 prompt, gs_rref out) {
     char *prompt_cstr = sl_to_cstr(prompt);
-    if (!prompt_cstr) return false;
+    if (!prompt_cstr) return 0;
 
     struct ChatStreamContext ctx;
     ctx.out = out;
@@ -107,9 +107,9 @@ static inline bool apple_ai_generate_chat(int64_t session_handle, sl_u8 prompt, 
     if (err) {
         fprintf(stderr, "\n%s\n", err);
         _swift_apple_ai_free_string(err);
-        return false;
+        return 0;
     }
-    return true;
+    return 1;
 }
 
 // 5. OpenAI SSE Streaming for HTTP server
@@ -158,9 +158,9 @@ static void on_sse_token(const char *token, int32_t len, void *userData) {
     gs_bld_append(ctx->out, token, (int64_t)len);
 }
 
-static inline bool apple_ai_generate_sse(int64_t session_handle, int32_t client_fd, sl_u8 prompt, gs_rref out) {
+static inline uint8_t apple_ai_generate_sse(int64_t session_handle, int32_t client_fd, sl_u8 prompt, gs_rref out) {
     char *prompt_cstr = sl_to_cstr(prompt);
-    if (!prompt_cstr) return false;
+    if (!prompt_cstr) return 0;
 
     struct SseStreamContext ctx;
     ctx.client_fd = client_fd;
@@ -172,13 +172,13 @@ static inline bool apple_ai_generate_sse(int64_t session_handle, int32_t client_
 
     if (err) {
         _swift_apple_ai_free_string(err);
-        return false;
+        return 0;
     }
 
     // Send final [DONE] event
     const char *done_chunk = "data: {\"choices\":[{\"delta\":{},\"finish_reason\":\"stop\"}]}\n\ndata: [DONE]\n\n";
     write(client_fd, done_chunk, strlen(done_chunk));
-    return true;
+    return 1;
 }
 
 // 6. POSIX Network helpers for HTTP server

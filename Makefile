@@ -15,12 +15,12 @@ libapple_ai_bridge.dylib: apple_ai_bridge.swift
 
 build: dylib
 	$(GOOSE) -o gz-aplai.c src/main.goose --include $(PWD)/apple_ai_bridge.h --standalone -O2
-	$(CC) -O2 gz-aplai.c -o gz-aplai -L. -lapple_ai_bridge -Wl,-rpath,@loader_path -lpthread
+	$(CC) -O2 gz-aplai.c -o gz-aplai -L. -lapple_ai_bridge -Wl,-rpath,@loader_path -Wl,-rpath,@loader_path/.. -lpthread
 
 test: dylib
-	$(GOOSE) -o test_runner.c test/test_all.goose --include $(PWD)/apple_ai_bridge.h --standalone -O2
-	$(CC) -O2 test_runner.c -o test_runner -L. -lapple_ai_bridge -Wl,-rpath,@loader_path -lpthread
-	./test_runner
+	$(GOOSE) -o test/smoke_ffi.c test/smoke_ffi.goose --include $(PWD)/apple_ai_bridge.h --standalone -O2
+	$(CC) -O2 test/smoke_ffi.c -o test/smoke_ffi -L. -lapple_ai_bridge -Wl,-rpath,@loader_path -Wl,-rpath,@loader_path/.. -lpthread
+	./test/smoke_ffi
 
 clean:
 	rm -f libapple_ai_bridge.dylib gz-aplai gz-aplai.c test_runner test_runner.c
