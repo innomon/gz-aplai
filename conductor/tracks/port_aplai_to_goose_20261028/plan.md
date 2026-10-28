@@ -11,7 +11,7 @@
     - [x] Compile smoke test using `/Volumes/mac1tb/B204-zone/owly-sewa/goose-lang/build/goose` and verify execution
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Build Harness, Swift Bridge & Goose FFI' [888144c]
 
-## Phase 2: Core Engine, Configuration & Structured Logging
+## Phase 2: Core Engine, Configuration & Structured Logging [checkpoint: 631d20c]
 
 - [x] Task: Configuration module (`config.goose` / `config.yaml`) [d039916]
     - [x] Implement config parser checking explicit path, `./config.yaml`, and executable directory
@@ -20,7 +20,7 @@
     - [x] Implement console message formatting and file logging
 - [x] Task: Core Inference Engine wrapper (`engine.goose`) [dff9021]
     - [x] Implement Goose wrapper around `AppleAIGenerate` with proper memory management and error handling
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Core Engine, Configuration & Structured Logging'
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Core Engine, Configuration & Structured Logging' [631d20c]
 
 ## Phase 3: CLI Engine, UNIX Pipeline & Interactive REPL
 
